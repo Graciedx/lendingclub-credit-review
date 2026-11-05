@@ -1,0 +1,526 @@
+{
+ "compatibilityLevel": 1550,
+ "model": {
+  "culture": "en-GB",
+  "dataAccessOptions": {
+   "legacyRedirects": true,
+   "returnErrorValuesAsNull": true
+  },
+  "defaultPowerBIDataSourceVersion": "powerBI_V3",
+  "sourceQueryCulture": "en-GB",
+  "tables": [
+   {
+    "name": "mart_vintage",
+    "columns": [
+     {
+      "name": "vintage",
+      "dataType": "int64",
+      "sourceColumn": "vintage",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "loans",
+      "dataType": "int64",
+      "sourceColumn": "loans",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "funded_musd",
+      "dataType": "double",
+      "sourceColumn": "funded_musd",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "avg_rate_pct",
+      "dataType": "double",
+      "sourceColumn": "avg_rate_pct",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "default_rate_pct",
+      "dataType": "double",
+      "sourceColumn": "default_rate_pct",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "total_return_pct",
+      "dataType": "double",
+      "sourceColumn": "total_return_pct",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "net_gain_musd",
+      "dataType": "double",
+      "sourceColumn": "net_gain_musd",
+      "summarizeBy": "none"
+     }
+    ],
+    "partitions": [
+     {
+      "name": "mart_vintage",
+      "mode": "import",
+      "source": {
+       "type": "m",
+       "expression": [
+        "let",
+        "    Source = Csv.Document(File.Contents(DataFolder & \"mart_vintage.csv\"),[Delimiter=\",\", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),",
+        "    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+        "    Typed = Table.TransformColumnTypes(Promoted, {{\"vintage\", Int64.Type}, {\"loans\", Int64.Type}, {\"funded_musd\", type number}, {\"avg_rate_pct\", type number}, {\"default_rate_pct\", type number}, {\"total_return_pct\", type number}, {\"net_gain_musd\", type number}}, \"en-GB\")",
+        "in",
+        "    Typed"
+       ]
+      }
+     }
+    ],
+    "measures": [
+     {
+      "name": "Return 2012",
+      "expression": "CALCULATE(SUM(mart_vintage[total_return_pct]),mart_vintage[vintage]=2012)/100",
+      "formatString": "0.0%"
+     },
+     {
+      "name": "Return 2015",
+      "expression": "CALCULATE(SUM(mart_vintage[total_return_pct]),mart_vintage[vintage]=2015)/100",
+      "formatString": "0.0%"
+     },
+     {
+      "name": "Default rate 2015",
+      "expression": "CALCULATE(SUM(mart_vintage[default_rate_pct]),mart_vintage[vintage]=2015)/100",
+      "formatString": "0.0%"
+     },
+     {
+      "name": "Default rate 2013",
+      "expression": "CALCULATE(SUM(mart_vintage[default_rate_pct]),mart_vintage[vintage]=2013)/100",
+      "formatString": "0.0%"
+     },
+     {
+      "name": "Loans analysed",
+      "expression": "SUM(mart_vintage[loans])",
+      "formatString": "#,0"
+     },
+     {
+      "name": "Funded",
+      "expression": "SUM(mart_vintage[funded_musd])/1000",
+      "formatString": "$0.00\"bn\""
+     }
+    ]
+   },
+   {
+    "name": "mart_grade_vintage",
+    "columns": [
+     {
+      "name": "grade_group",
+      "dataType": "string",
+      "sourceColumn": "grade_group",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "vintage",
+      "dataType": "int64",
+      "sourceColumn": "vintage",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "loans",
+      "dataType": "int64",
+      "sourceColumn": "loans",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "funded_musd",
+      "dataType": "double",
+      "sourceColumn": "funded_musd",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "avg_rate_pct",
+      "dataType": "double",
+      "sourceColumn": "avg_rate_pct",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "default_rate_pct",
+      "dataType": "double",
+      "sourceColumn": "default_rate_pct",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "total_return_pct",
+      "dataType": "double",
+      "sourceColumn": "total_return_pct",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "net_gain_musd",
+      "dataType": "double",
+      "sourceColumn": "net_gain_musd",
+      "summarizeBy": "none"
+     }
+    ],
+    "partitions": [
+     {
+      "name": "mart_grade_vintage",
+      "mode": "import",
+      "source": {
+       "type": "m",
+       "expression": [
+        "let",
+        "    Source = Csv.Document(File.Contents(DataFolder & \"mart_grade_vintage.csv\"),[Delimiter=\",\", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),",
+        "    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+        "    Typed = Table.TransformColumnTypes(Promoted, {{\"grade_group\", type text}, {\"vintage\", Int64.Type}, {\"loans\", Int64.Type}, {\"funded_musd\", type number}, {\"avg_rate_pct\", type number}, {\"default_rate_pct\", type number}, {\"total_return_pct\", type number}, {\"net_gain_musd\", type number}}, \"en-GB\")",
+        "in",
+        "    Typed"
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "name": "mart_drivers",
+    "columns": [
+     {
+      "name": "driver",
+      "dataType": "string",
+      "sourceColumn": "driver",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "band",
+      "dataType": "string",
+      "sourceColumn": "band",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "grade_group",
+      "dataType": "string",
+      "sourceColumn": "grade_group",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "vintage",
+      "dataType": "int64",
+      "sourceColumn": "vintage",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "loans",
+      "dataType": "int64",
+      "sourceColumn": "loans",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "funded",
+      "dataType": "double",
+      "sourceColumn": "funded",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "bad_loans",
+      "dataType": "int64",
+      "sourceColumn": "bad_loans",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "net_gain",
+      "dataType": "double",
+      "sourceColumn": "net_gain",
+      "summarizeBy": "none"
+     }
+    ],
+    "partitions": [
+     {
+      "name": "mart_drivers",
+      "mode": "import",
+      "source": {
+       "type": "m",
+       "expression": [
+        "let",
+        "    Source = Csv.Document(File.Contents(DataFolder & \"mart_drivers.csv\"),[Delimiter=\",\", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),",
+        "    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+        "    Typed = Table.TransformColumnTypes(Promoted, {{\"driver\", type text}, {\"band\", type text}, {\"grade_group\", type text}, {\"vintage\", Int64.Type}, {\"loans\", Int64.Type}, {\"funded\", type number}, {\"bad_loans\", Int64.Type}, {\"net_gain\", type number}}, \"en-GB\")",
+        "in",
+        "    Typed"
+       ]
+      }
+     }
+    ],
+    "measures": [
+     {
+      "name": "Default rate",
+      "expression": "DIVIDE(SUM(mart_drivers[bad_loans]),SUM(mart_drivers[loans]))",
+      "formatString": "0.0%"
+     },
+     {
+      "name": "Total return",
+      "expression": "DIVIDE(SUM(mart_drivers[net_gain]),SUM(mart_drivers[funded]))",
+      "formatString": "0.0%"
+     }
+    ]
+   },
+   {
+    "name": "mart_rule_backtest",
+    "columns": [
+     {
+      "name": "vintage",
+      "dataType": "int64",
+      "sourceColumn": "vintage",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "all_loans",
+      "dataType": "int64",
+      "sourceColumn": "all_loans",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "loans_hit",
+      "dataType": "int64",
+      "sourceColumn": "loans_hit",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "pct_loans_hit",
+      "dataType": "double",
+      "sourceColumn": "pct_loans_hit",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "funded_hit_musd",
+      "dataType": "double",
+      "sourceColumn": "funded_hit_musd",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "pct_of_bad_loans_caught",
+      "dataType": "double",
+      "sourceColumn": "pct_of_bad_loans_caught",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "default_rate_hit_pct",
+      "dataType": "double",
+      "sourceColumn": "default_rate_hit_pct",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "return_hit_pct",
+      "dataType": "double",
+      "sourceColumn": "return_hit_pct",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "default_rate_all_pct",
+      "dataType": "double",
+      "sourceColumn": "default_rate_all_pct",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "default_rate_after_rule_pct",
+      "dataType": "double",
+      "sourceColumn": "default_rate_after_rule_pct",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "return_all_pct",
+      "dataType": "double",
+      "sourceColumn": "return_all_pct",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "return_after_rule_pct",
+      "dataType": "double",
+      "sourceColumn": "return_after_rule_pct",
+      "summarizeBy": "none"
+     }
+    ],
+    "partitions": [
+     {
+      "name": "mart_rule_backtest",
+      "mode": "import",
+      "source": {
+       "type": "m",
+       "expression": [
+        "let",
+        "    Source = Csv.Document(File.Contents(DataFolder & \"mart_rule_backtest.csv\"),[Delimiter=\",\", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),",
+        "    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+        "    Typed = Table.TransformColumnTypes(Promoted, {{\"vintage\", Int64.Type}, {\"all_loans\", Int64.Type}, {\"loans_hit\", Int64.Type}, {\"pct_loans_hit\", type number}, {\"funded_hit_musd\", type number}, {\"pct_of_bad_loans_caught\", type number}, {\"default_rate_hit_pct\", type number}, {\"return_hit_pct\", type number}, {\"default_rate_all_pct\", type number}, {\"default_rate_after_rule_pct\", type number}, {\"return_all_pct\", type number}, {\"return_after_rule_pct\", type number}}, \"en-GB\")",
+        "in",
+        "    Typed"
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "name": "mart_repricing",
+    "columns": [
+     {
+      "name": "grade_group",
+      "dataType": "string",
+      "sourceColumn": "grade_group",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "avg_rate_2015_pct",
+      "dataType": "double",
+      "sourceColumn": "avg_rate_2015_pct",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "total_return_2015_pct",
+      "dataType": "double",
+      "sourceColumn": "total_return_2015_pct",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "pass_through",
+      "dataType": "double",
+      "sourceColumn": "pass_through",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "rate_rise_needed_pts",
+      "dataType": "double",
+      "sourceColumn": "rate_rise_needed_pts",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "rate_needed_pct",
+      "dataType": "double",
+      "sourceColumn": "rate_needed_pct",
+      "summarizeBy": "none"
+     }
+    ],
+    "partitions": [
+     {
+      "name": "mart_repricing",
+      "mode": "import",
+      "source": {
+       "type": "m",
+       "expression": [
+        "let",
+        "    Source = Csv.Document(File.Contents(DataFolder & \"mart_repricing.csv\"),[Delimiter=\",\", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),",
+        "    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+        "    Typed = Table.TransformColumnTypes(Promoted, {{\"grade_group\", type text}, {\"avg_rate_2015_pct\", type number}, {\"total_return_2015_pct\", type number}, {\"pass_through\", type number}, {\"rate_rise_needed_pts\", type number}, {\"rate_needed_pct\", type number}}, \"en-GB\")",
+        "in",
+        "    Typed"
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "name": "mart_vintage_curve",
+    "columns": [
+     {
+      "name": "grade_group",
+      "dataType": "string",
+      "sourceColumn": "grade_group",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "vintage",
+      "dataType": "int64",
+      "sourceColumn": "vintage",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "months_on_book",
+      "dataType": "int64",
+      "sourceColumn": "months_on_book",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "cumulative_default_pct",
+      "dataType": "double",
+      "sourceColumn": "cumulative_default_pct",
+      "summarizeBy": "none"
+     }
+    ],
+    "partitions": [
+     {
+      "name": "mart_vintage_curve",
+      "mode": "import",
+      "source": {
+       "type": "m",
+       "expression": [
+        "let",
+        "    Source = Csv.Document(File.Contents(DataFolder & \"mart_vintage_curve.csv\"),[Delimiter=\",\", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),",
+        "    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+        "    Typed = Table.TransformColumnTypes(Promoted, {{\"grade_group\", type text}, {\"vintage\", Int64.Type}, {\"months_on_book\", Int64.Type}, {\"cumulative_default_pct\", type number}}, \"en-GB\")",
+        "in",
+        "    Typed"
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "name": "mart_2016_early",
+    "columns": [
+     {
+      "name": "grade_group",
+      "dataType": "string",
+      "sourceColumn": "grade_group",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "loans",
+      "dataType": "int64",
+      "sourceColumn": "loans",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "avg_rate_pct",
+      "dataType": "double",
+      "sourceColumn": "avg_rate_pct",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "default_rate_to_date_pct",
+      "dataType": "double",
+      "sourceColumn": "default_rate_to_date_pct",
+      "summarizeBy": "none"
+     },
+     {
+      "name": "pct_still_open",
+      "dataType": "double",
+      "sourceColumn": "pct_still_open",
+      "summarizeBy": "none"
+     }
+    ],
+    "partitions": [
+     {
+      "name": "mart_2016_early",
+      "mode": "import",
+      "source": {
+       "type": "m",
+       "expression": [
+        "let",
+        "    Source = Csv.Document(File.Contents(DataFolder & \"mart_2016_early.csv\"),[Delimiter=\",\", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),",
+        "    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+        "    Typed = Table.TransformColumnTypes(Promoted, {{\"grade_group\", type text}, {\"loans\", Int64.Type}, {\"avg_rate_pct\", type number}, {\"default_rate_to_date_pct\", type number}, {\"pct_still_open\", type number}}, \"en-GB\")",
+        "in",
+        "    Typed"
+       ]
+      }
+     }
+    ]
+   }
+  ],
+  "relationships": [],
+  "expressions": [
+   {
+    "name": "DataFolder",
+    "kind": "m",
+    "expression": "\"C:\\Users\\Laptop\\Downloads\\portfolio-projects\\lending-club\\marts\\\" meta [IsParameterQuery=true, Type=\"Text\", IsParameterQueryRequired=true]"
+   }
+  ],
+  "annotations": [
+   {
+    "name": "PBI_ProTooling",
+    "value": "[\"DevMode\"]"
+   }
+  ]
+ }
+}

@@ -1,0 +1,6 @@
+grade_group,loans,avg_rate_pct,default_rate_to_date_pct,pct_still_open
+A,66862,6.85,4.9,29.3
+B,114783,10.26,11.0,29.9
+C,92317,13.71,17.8,27.9
+D,36707,18.09,25.4,24.6
+E-G,12826,23.2,34.8,19.0

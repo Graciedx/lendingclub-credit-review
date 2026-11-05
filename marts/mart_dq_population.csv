@@ -1,0 +1,8 @@
+step,item,loans
+1,Rows in raw file,2260701
+2,Less: footer lines,-33
+3,Less: 60-month loans,-650914
+4,"Less: 36-month, issued before 2012",-31534
+5,"Less: 36-month, issued after 2015 (not finished)",-988585
+6,"Less: 2012-2015, still open or late",-147
+7,Matured loans analysed,589488
