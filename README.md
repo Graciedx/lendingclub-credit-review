@@ -1,11 +1,13 @@
-# LendingClub: Credit Portfolio Review (SQL and Power BI)
+# LendingClub: Credit Portfolio Review (SQL)
 
 **The question:** as lending grew about seven times between 2012 and 2015, did the book stay worth the risk?
 
 **The answer:** no. Total return fell from 10.2% to 6.6%, and by 2015 the riskiest grades paid less than the safest. The warning was visible in the first 12 months on book.
 
-Built with SQL (DuckDB) and Power BI on 2.26m LendingClub loans, analysing the 589,488 36-month loans ($7.45bn) that had reached their end date.
+Built with SQL (DuckDB) on 2.26m LendingClub loans, analysing the 589,488 36-month loans ($7.45bn) that had reached their end date.
 
+
+**Status:** the SQL analysis is complete. A Power BI dashboard is in progress, and its working files are in `dashboard/`.
 
 ## What I found
 
@@ -56,8 +58,8 @@ These loans still earned money up to 2014, so the rule would have looked weak at
 ```text
 sql/01_clean.sql      Types the raw file and defines the finished-loan population
 sql/02_analysis.sql   One mart table per business question
-marts/                Query outputs used by Power BI
-dashboard/            Power BI project, open the .pbip in Power BI Desktop
+marts/                Query outputs
+dashboard/            Power BI work in progress
 run_all.py            Rebuilds everything from the raw file
 ```
 
@@ -67,4 +69,3 @@ run_all.py            Rebuilds everything from the raw file
 2. Run `pip install duckdb`.
 3. Run `python run_all.py`.
 
-To refresh the dashboard, set the `DataFolder` parameter in Power BI to your `marts` folder.
